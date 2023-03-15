@@ -7,29 +7,44 @@
 
 int main(int argc, char* argv[])
 {
-    FILE* file = fopen("passwd", "r"); // open file
+    FILE* file = fopen("//wsl.localhost/Ubuntu/etc/passwd", "r"); // open file
 
     if (!file) {
         perror("Error opening file");
         return 1;
     }
 
-    int bufferLength = 255;
+    int bufferLength = MAXCHARS;
     char buffer[bufferLength];
 
-    while (fgets(buffer, bufferLength, file)) {
+    char* pch;
 
-        printf("%s\n", buffer);
+    while (fgets(buffer, bufferLength, file)) {
+        pch = strtok(buffer, ":");
+
+        char count = 0;
+        while (pch != NULL) {
+
+            switch (count) {
+            case 0:
+                printf("Username: \"%s\" ", pch);
+                count++;
+                break;
+            case 2:
+                printf("UserID: \"%s\"\n", pch);
+                count++;
+                break;
+
+            default:
+                count++;
+                break;
+            }
+
+            pch = strtok(NULL, ":");
+        }
     }
 
     fclose(file);
-
-    // TODO:
-    // 1. read each line from from file
-    // 2. parse for username (first column) and print
-    // 3. find third column and print user-id
-
-    // TODO: close file
 
     return 0;
 }
