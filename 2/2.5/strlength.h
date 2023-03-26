@@ -1,3 +1,5 @@
+#pragma once
+
 unsigned strlength(char* str)
 {
     unsigned count = 0;
